@@ -82,3 +82,7 @@ All string data is dynamically allocated.
 Functions like clear() and free_name_list() free all memory to prevent leaks.
 
 enqueue() and dequeue() manage allocations carefully to avoid dangling pointers.
+
+Priority queue operations are designed to prevent memory corruption even under repeated insertions and deletions.
+
+Proper handling of node swaps and recursive clearing ensures every node and string is freed.
