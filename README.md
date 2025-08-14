@@ -1,27 +1,35 @@
-# Dynamic Priority Queue with Memory-Safe BST in C
+# Dynamic Priority Queue in C (BST Implementation)
 
-This project implements a **priority queue** in C using a **binary search tree (BST)** as the underlying data structure. Each node in the BST stores a **priority** and a dynamically allocated **string**, allowing efficient insertion, deletion, and retrieval based on priority. Memory safety is emphasized through careful allocation and deallocation.
+This project implements a **priority queue** in C using a **binary search tree (BST)**. Each node contains a **priority** and a dynamically allocated **string**, allowing efficient insertion, removal, and retrieval of elements by priority while maintaining memory safety.
+
+---
 
 ## Features
 
-- **Enqueue / Dequeue**: Add and remove elements based on priority.  
-- **Peek**: Access the element with the highest priority without removal.  
-- **Change Priority**: Modify the priority of a specific element.  
-- **Remove Elements in Range**: Remove all elements whose priority falls within a given range.  
-- **Memory Management**: All dynamically allocated memory is properly managed and cleared.  
-- **Get All Elements**: Retrieve a list of all elements sorted by priority.  
-- **Size and Emptiness Checks**: Query the size of the queue or whether it is empty.
+- **Enqueue / Dequeue**: Add and remove elements according to priority.
+- **Peek**: Access the highest-priority element without removal.
+- **Change Priority**: Update the priority of an existing element.
+- **Remove Elements in Range**: Remove all elements with priority within a specified range.
+- **Get All Elements**: Retrieve all elements sorted by priority.
+- **Memory Management**: Dynamically allocated memory is carefully managed to prevent leaks.
+- **Queue Information**: Check queue size and whether the queue is empty.
+
+---
 
 ## Data Structures
 
-- **Node**: Represents each element in the priority queue. Contains:
-  - `priority` (unsigned int)
-  - `str` (dynamically allocated string)
-  - `left` and `right` child pointers
+### Node
+Represents an element in the BST:
+- `priority` (unsigned int)  
+- `str` (dynamically allocated string)  
+- `left` and `right` child pointers  
 
-- **Prio_que**: Represents the priority queue. Contains:
-  - `head` (pointer to the root of the BST)
-  - `size` (current number of elements in the queue)
+### Prio_que
+Represents the priority queue:
+- `head` (pointer to the root node of the BST)  
+- `size` (current number of elements in the queue)  
+
+---
 
 ## Usage
 
@@ -36,13 +44,13 @@ Copy
 Edit
 enqueue(&prio_q, "Task A", 50);
 enqueue(&prio_q, "Task B", 80);
-Access highest priority element
+Access the highest-priority element
 
 c
 Copy
 Edit
 char *top = peek(prio_q);
-// Use `top` as needed, then free it
+// Use the element, then free memory
 free(top);
 Remove elements
 
@@ -63,26 +71,51 @@ c
 Copy
 Edit
 clear(&prio_q);
-Tests
-The project includes two test programs:
+Retrieve all elements
 
-test1.c: Validates clear() and ensures the queue can be reinitialized.
+c
+Copy
+Edit
+char **elements = get_all_elements(prio_q);
+// Remember to free each element and the array itself
+free_name_list(elements);
+Testing
+Included test programs:
 
-test2.c: Adds elements, checks size, clears the queue, and verifies memory safety.
+test1.c: Verifies clear() and queue reinitialization.
 
-Both tests print a confirmation message when successful:
+test2.c: Tests insertion, size, clearing, and memory safety.
+
+Both tests output:
 
 bash
 Copy
 Edit
 Yet another test worked right!
 Memory Safety
-All string data is dynamically allocated.
+All strings are dynamically allocated and freed appropriately.
 
-Functions like clear() and free_name_list() free all memory to prevent leaks.
+clear() and free_name_list() ensure no memory leaks.
 
-enqueue() and dequeue() manage allocations carefully to avoid dangling pointers.
+enqueue() and dequeue() manage memory safely.
 
-Priority queue operations are designed to prevent memory corruption even under repeated insertions and deletions.
+Recursive clearing and careful handling of BST node swaps prevent dangling pointers.
 
-Proper handling of node swaps and recursive clearing ensures every node and string is freed.
+Designed to be robust under repeated insertions, deletions, and priority changes.
+
+Example
+c
+Copy
+Edit
+Prio_que pq;
+init(&pq);
+
+enqueue(&pq, "Low Priority", 10);
+enqueue(&pq, "High Priority", 90);
+
+char *top = peek(pq); // "High Priority"
+printf("%s\n", top);
+free(top);
+
+dequeue(&pq);
+clear(&pq);
